@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Historique des QI</title>
+    <style>
+        body {
+            background-color: #fff9e6;
+            font-family: 'Comic Sans MS', cursive;
+            text-align: center;
+            padding: 40px;
+        }
+
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            width: 80%;
+            background-color: #fffde7;
+        }
+
+        th,
+        td {
+            border: 1px solid #d4ac0d;
+            padding: 10px;
+        }
+
+        th {
+            background-color: #f7dc6f;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: blue;
+        }
+
+        footer {
+            margin-top: 50px;
+            font-size: 1em;
+            color: #ff0077;
+        }
+
+        .password-container {
+            margin-top: 30px;
+        }
+
+        input[type="password"] {
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 10px;
+            border: 2px solid #ff0077;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #ff0077;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e6005c;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Historique des QI Absurdes</h1>
+    <table id="table">
+        <tr>
+            <th>Date</th>
+            <th>Nom</th>
+            <th>Score</th>
+            <th>Commentaire</th>
+        </tr>
+    </table>
+
+    <div class="password-container">
+        <label for="password">Entrez le mot de passe pour supprimer l'historique :</label>
+        <input type="password" id="password" />
+        <button onclick="supprimerHistorique()">Supprimer l'historique</button>
+    </div>
+
+    <a href="accueil.html">⬅️ Retour à l'accueil</a>
+
+    <script>
+        const table = document.getElementById("table");
+        const historique = JSON.parse(localStorage.getItem("historiqueQi")) || [];
+
+        historique.forEach(entry => {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${entry.date}</td><td>${entry.name}</td><td>${entry.score}</td><td>${entry.message}</td>`;
+            table.appendChild(row);
+        });
+
+        function supprimerHistorique() {
+            const password = document.getElementById("password").value.trim();
+            const motDePasseCorrect = "TGTKT123";  // Le mot de passe que vous souhaitez
+
+            if (password === motDePasseCorrect) {
+                localStorage.removeItem("historiqueQi");
+                alert("Historique supprimé !");
+                window.location.reload();  // Recharge la page pour refléter la suppression
+            } else {
+                alert("Mot de passe incorrect. Accès refusé.");
+            }
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2025 TGTKT</p>
+    </footer>
+</body>
+
+</html>

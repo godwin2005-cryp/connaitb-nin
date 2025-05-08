@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test de QI sur le Bénin</title>
+    <style>
+        body {
+            background-color: #e6f7ff;
+            font-family: 'Comic Sans MS', cursive;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .question-box {
+            background-color: #ccf2ff;
+            border: 3px dashed #0099cc;
+            border-radius: 20px;
+            padding: 30px;
+            width: 80%;
+            margin: auto;
+        }
+
+        button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #00ccff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0099cc;
+        }
+
+        #result {
+            font-size: 24px;
+            margin-top: 30px;
+            color: #003366;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 18px;
+            text-decoration: none;
+            color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test de QI sur le Bénin 🧠</h1>
+    <div id="name-container">
+        <label for="name">Entrez votre nom : </label>
+        <input type="text" id="name" />
+        <button onclick="startTest()">Démarrer le test</button>
+    </div>
+    <div class="question-box" id="quiz" style="display: none;">
+        <p id="question">Chargement...</p>
+        <div id="answers"></div>
+    </div>
+    <p id="result"></p>
+    <a href="accueil.html">⬅️ Retour à l'accueil</a>
+
+    <script>
+        let name = "";
+        const allQuestions = [
+            { question: "Quel est le nombre exact de crocodiles qui peuvent danser la rumba sur le fleuve Ouémé ?", answers: ["7", "42", "Aucun", "Tout le monde sait que les crocodiles ne dansent pas !"], correct: 3 },
+            { question: "Si un Béninois traverse un champ de coton tout en chantant, quel est le titre de la chanson qu’il chantera ?", answers: ["Coton magique", "Au bout de la nuit", "La danse du coton", "Je suis un Béninois !"], correct: 3 },
+            { question: "Quelle est la couleur exacte de la pluie au Bénin ?", answers: ["Bleue", "Rose", "Grise", "La pluie est transparente, voyons !"], correct: 3 },
+            { question: "Si une chèvre et un mouton courent un marathon à Cotonou, qui gagne ?", answers: ["La chèvre", "Le mouton", "Les deux sont trop lents", "C’est une course sans gagnant, mais l’essentiel est de participer !"], correct: 3 },
+            { question: "Quand un Béninois mange une banane plantain, il a l’air de :", answers: ["Un roi", "Un danseur de hip-hop", "Un chef de village", "Manger une banane, c’est juste pour le plaisir !"], correct: 3 },
+            { question: "À quel moment un Béninois doit-il absolument porter un chapeau en forme de panier ?", answers: ["Lors de la fête nationale", "Lorsqu’il fait trop chaud", "Quand il est à l’intérieur", "Les chapeaux ne sont pas vraiment nécessaires, mais c’est marrant !"], correct: 3 },
+            { question: "Combien de Béninois faut-il pour faire une course de sac ?", answers: ["2", "10", "Aucun, mais tout le monde peut essayer !", "C’est une question piège, il n’y a jamais de 'faut-il' !"], correct: 2 },
+            { question: "Pourquoi les poissons du lac Nokoué sont-ils si intelligents ?", answers: ["Parce qu’ils ont été formés dans une école de poissons", "Ils lisent des livres sous l’eau", "Parce qu’ils ont le Wi-Fi aquatique", "Ce n’est qu’une rumeur, mais ils nagent super vite !"], correct: 3 },
+            { question: "Quel est le plat préféré d’un ministre béninois qui veut impressionner ses invités ?", answers: ["Un festin de yams et de sauce tomate", "Un plat de banane et de poulet", "Un petit déjeuner avec des œufs et des crêpes", "Tout est question de budget et de politique alimentaire !"], correct: 3 },
+            { question: "Si la statue de la liberté à Cotonou devait parler, que dirait-elle ?", answers: ["Liberté, égalité, fraternité", "Je suis fatiguée, je veux des vacances !", "J’ai vu trop de monde défiler sous mes pieds", "Elle ne parle pas, elle est juste une statue !"], correct: 3 },
+            // Ajoutez 90 autres questions ici pour atteindre 100 questions
+            { question: "Quel est le numéro de téléphone de l'éléphant ?", answers: ["+229 123456", "+229 999999", "Les éléphants ne téléphonent pas", "C’est une question piège !"], correct: 2 },
+            { question: "Combien de fois peut-on couper une baguette en deux avant d’en avoir plus ?", answers: ["1 fois", "Infini", "2 fois", "Aucune idée, c’est une question piège"], correct: 1 },
+            { question: "Si un poulet est traversé par un train, quelle est sa couleur ?", answers: ["Rouge", "Marron", "Jaune", "C’est une question piège, le poulet ne peut pas être traversé par un train !"], correct: 3 },
+            { question: "Quel est l’aliment préféré des lions au Bénin ?", answers: ["Le riz", "Le poulet rôti", "Les poissons du lac", "Les lions ne mangent pas au Bénin"], correct: 3 },
+            { question: "Quel animal a inventé le chocolat ?", answers: ["Le chien", "Le gorille", "Le singe", "Le chocolat n’a pas d’inventeur !"], correct: 3 },
+            { question: "Quand un Béninois voit un hippopotame, que fait-il ?", answers: ["Il l’admire", "Il prend une photo", "Il l’ignore", "Cela dépend de la taille de l’hippopotame !"], correct: 2 },
+            { question: "Pourquoi les arbres du Bénin chantent-ils ?", answers: ["Parce qu’ils ont appris à chanter", "Parce que les oiseaux leur enseignent", "Ils ne chantent pas, c’est une rumeur", "C’est le vent qui les fait chanter"], correct: 3 },
+            { question: "Quel est le plat préféré d'un extraterrestre au Bénin ?", answers: ["Yam et sauce tomate", "Fried chicken", "Légumes de Cotonou", "Les extraterrestres ne mangent pas le Bénin"], correct: 3 },
+            // Ajoutez ici plus de questions jusqu’à 100
+        ];
+
+        let current = 0;
+        let score = 0;
+        let selectedQuestions = [];
+
+        // Sélectionner 10 questions aléatoires
+        function getRandomQuestions() {
+            while (selectedQuestions.length < 10) {
+                let randomIndex = Math.floor(Math.random() * allQuestions.length);
+                if (!selectedQuestions.includes(allQuestions[randomIndex])) {
+                    selectedQuestions.push(allQuestions[randomIndex]);
+                }
+            }
+        }
+
+        function startTest() {
+            name = document.getElementById("name").value.trim();
+            if (!name) {
+                alert("Veuillez entrer votre nom !");
+                return;
+            }
+            document.getElementById("name-container").style.display = "none";
+            document.getElementById("quiz").style.display = "block";
+            getRandomQuestions(); // Sélectionne 10 questions au hasard
+            afficherQuestion();
+        }
+
+        function afficherQuestion() {
+            if (current >= selectedQuestions.length) {
+                const box = document.getElementById("quiz");
+                box.style.display = "none";
+
+                let message = "";
+                if (score <= 2) message = "😅 Tu es sûr(e) que tu vis au Bénin ?";
+                else if (score <= 5) message = "😬 Tu n'as pas honte ?";
+                else if (score <= 8) message = "🤔 Tu connais un peu ton pays.";
+                else message = "👏 Non, bravo !";
+
+                const result = document.getElementById("result");
+                result.innerHTML = `${name}, tu as ${score}/${selectedQuestions.length} bonnes réponses.<br>${message}`;
+                return;
+            }
+
+            const q = selectedQuestions[current];
+            document.getElementById("question").textContent = q.question;
+            const answersDiv = document.getElementById("answers");
+            answersDiv.innerHTML = "";
+
+            q.answers.forEach((rep, idx) => {
+                const btn = document.createElement("button");
+                btn.textContent = rep;
+                btn.onclick = () => {
+                    if (idx === q.correct) score++;
+                    current++;
+                    afficherQuestion();
+                };
+                answersDiv.appendChild(btn);
+            });
+        }
+    </script>
+</body>
+
+</html>
